@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edwin AI</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">Edwin AI</div>
+      <button id="newChatBtn">+ Nuevo Chat</button>
+      <div id="chatList" class="chat-list"></div>
+    </aside>
+    <main class="chat-section">
+      <div id="chatContainer" class="chat-container"></div>
+      <form id="chatForm">
+        <input type="text" id="chatInput" placeholder="Escribí tu mensaje..." autocomplete="off" required />
+        <button type="submit">Enviar</button>
+      </form>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
