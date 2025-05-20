@@ -56,7 +56,10 @@ chatForm.addEventListener("submit", async (e) => {
     const res = await fetch("https://manuachinelli.app.n8n.cloud/webhook/aa0c7c03-a737-43b0-8656-b03c0ad9c32b", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question: text }),
+      body: JSON.stringify({
+        question: text,
+        chatId: selectedChatId || "default"  // <-- acá se pasa el chatId
+      }),
     });
 
     const data = await res.json();
@@ -76,9 +79,11 @@ newChatBtn.addEventListener("click", () => {
   if (currentChat.length > 0) {
     const name = currentChat.find(m => m.sender === "user")?.text || "Chat nuevo";
     const chatName = name.length > 25 ? name.slice(0, 25) + "..." : name;
-    chatHistory.push({ id: Date.now(), name: chatName, messages: currentChat });
+    const chatId = Date.now();
+    chatHistory.push({ id: chatId, name: chatName, messages: currentChat });
     localStorage.setItem("edwinChats", JSON.stringify(chatHistory));
     loadChatList();
+    selectedChatId = chatId;
   }
   currentChat = [];
   chatContainer.innerHTML = "";
