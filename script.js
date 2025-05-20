@@ -58,7 +58,7 @@ chatForm.addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         question: text,
-        chatId: selectedChatId || "default"  // <-- acá se pasa el chatId
+        chatId: selectedChatId || "default"
       }),
     });
 
@@ -76,15 +76,15 @@ chatForm.addEventListener("submit", async (e) => {
 
 // Nuevo chat
 newChatBtn.addEventListener("click", () => {
+  const chatId = Date.now(); // Generar un nuevo ID siempre
   if (currentChat.length > 0) {
     const name = currentChat.find(m => m.sender === "user")?.text || "Chat nuevo";
     const chatName = name.length > 25 ? name.slice(0, 25) + "..." : name;
-    const chatId = Date.now();
     chatHistory.push({ id: chatId, name: chatName, messages: currentChat });
     localStorage.setItem("edwinChats", JSON.stringify(chatHistory));
     loadChatList();
-    selectedChatId = chatId;
   }
+  selectedChatId = chatId;
   currentChat = [];
   chatContainer.innerHTML = "";
   setTimeout(() => {
