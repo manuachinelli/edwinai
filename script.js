@@ -4,9 +4,13 @@ const chatInput = document.getElementById("chatInput");
 const chatList = document.getElementById("chatList");
 const newChatBtn = document.getElementById("newChatBtn");
 
+function generateChatId() {
+  return 'chat_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+}
+
 let currentChat = [];
 let chatHistory = JSON.parse(localStorage.getItem("edwinChats")) || [];
-let selectedChatId = null;
+let selectedChatId = chatHistory.length > 0 ? chatHistory[chatHistory.length - 1].id : generateChatId();
 let isWaiting = false;
 
 // Mensaje inicial
@@ -45,7 +49,6 @@ chatForm.addEventListener("submit", async (e) => {
   setInputEnabled(false);
   isWaiting = true;
 
-  // Indicador de "escribiendo..."
   const typingMessage = document.createElement("div");
   typingMessage.classList.add("message", "bot");
   typingMessage.innerText = "Edwin AI está escribiendo...";
@@ -58,7 +61,7 @@ chatForm.addEventListener("submit", async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         question: text,
-        chatId: selectedChatId || "default"
+        chatId: selectedChatId
       }),
     });
 
@@ -76,15 +79,15 @@ chatForm.addEventListener("submit", async (e) => {
 
 // Nuevo chat
 newChatBtn.addEventListener("click", () => {
-  const chatId = Date.now(); // Generar un nuevo ID siempre
   if (currentChat.length > 0) {
     const name = currentChat.find(m => m.sender === "user")?.text || "Chat nuevo";
     const chatName = name.length > 25 ? name.slice(0, 25) + "..." : name;
+    const chatId = generateChatId();
     chatHistory.push({ id: chatId, name: chatName, messages: currentChat });
     localStorage.setItem("edwinChats", JSON.stringify(chatHistory));
+    selectedChatId = chatId;
     loadChatList();
   }
-  selectedChatId = chatId;
   currentChat = [];
   chatContainer.innerHTML = "";
   setTimeout(() => {
@@ -107,3 +110,4 @@ function loadChatList() {
     chatList.appendChild(btn);
   });
 }
+
